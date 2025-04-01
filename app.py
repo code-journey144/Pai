@@ -1,80 +1,62 @@
 from flask import Flask, request, jsonify
-import re
 import requests
 import time
 
 app = Flask(__name__)
 
-key_regex = r'let content = \("([^"]+)"\);'
+# List of supported domains
+SUPPORTED_DOMAINS = [
+    "codex", "relzhub", "mediafire", "pastebin", "pastedrop", "justpaste", 
+    "pastecanyon", "mboost", "rekonise", "socialwolvez", "sub2get", 
+    "sub2unlock.com", "sub2unlock.net", "sub4unlock.com", "adfoc.us", 
+    "unlocknow.net", "ldnesfspublic.org", "link.rbscripts.net"
+]
 
-def fetch(url, headers):
+# Route to get supported domains
+@app.route('/supported', methods=['GET'])
+def supported_domains():
+    return jsonify({
+        "supported_domains": SUPPORTED_DOMAINS
+    })
+
+@app.route('/bypass', methods=['GET'])
+def api_bypass():
+    # Get the URL parameter from the query string
+    url = request.args.get('url')
+
+    if not url:
+        return jsonify({"error": "URL parameter is missing"}), 400
+
+    start_time = time.time()
+
     try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        return response.text
+        # Check if the URL matches any of the supported domains
+        if any(domain in url for domain in SUPPORTED_DOMAINS):
+            # Request to Solar-X API (or any other bypass API you want to use)
+            response = requests.get(f'https://api.solar-x.top/api/v3/bypass?url={url}', timeout=10)
+            response.raise_for_status()  # Raise error for non-2xx status codes
+            data = response.json()
+
+            # Extract 'result' and 'time', and add 'credit'
+            result = data.get("result")
+            time_value = data.get("time")
+
+            return jsonify({
+                "result": result,
+                "time": time_value,
+                "credit": "Made by MysticMoth"
+            })
+        else:
+            return jsonify({
+                "error": "URL domain not supported. Please use supported domains."
+            }), 400
+
+    except requests.exceptions.Timeout:
+        return jsonify({"error": "Request timed out. Please try again."}), 408
+
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Failed to fetch URL: {url}. Error: {e}")
+        return jsonify({"error": f"Failed to bypass URL: {str(e)}"}), 500
 
-def bypass_link(url):
-    try:
-        hwid = url.split("HWID=")[-1]
-        if not hwid:
-            raise Exception("Invalid HWID in URL")
 
-        start_time = time.time()
-        endpoints = [
-            {
-                "url": f"https://flux.li/android/external/start.php?HWID={hwid}",
-                "referer": ""
-            },
-            {
-                "url": "https://flux.li/android/external/check1.php?hash={hash}",
-                "referer": "https://linkvertise.com"
-            },
-            {
-                "url": "https://flux.li/android/external/main.php?hash={hash}",
-                "referer": "https://linkvertise.com"
-            }
-        ]
-
-        for endpoint in endpoints:
-            url = endpoint["url"]
-            referer = endpoint["referer"]
-            headers = {
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'DNT': '1',
-                'Connection': 'close',
-                'Referer': referer,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x66) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
-            }
-            response_text = fetch(url, headers)
-            if endpoint == endpoints[-1]:
-                match = re.search(key_regex, response_text)
-                if match:
-                    end_time = time.time()
-                    time_taken = end_time - start_time
-                    return match.group(1), time_taken
-                else:
-                    raise Exception("Failed to find content key")
-    except Exception as e:
-        raise Exception(f"Failed to bypass link. Error: {e}")
-
-@app.route("/")
-def home():
-    return jsonify({"message": "Invalid Endpoint"})
-
-@app.route("/prince/fluxus")
-def bypass():
-    url = request.args.get("link")
-    if url.startswith("https://flux.li/android/external/start.php?HWID="):
-        try:
-            content, time_taken = bypass_link(url)
-            return jsonify({"key": content, "time_taken": time_taken, "credit": "MysticMoth"})
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
-    else:
-        return jsonify({"message": "Please Enter Fluxus Link!"})
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=1117)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
