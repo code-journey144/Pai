@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProCore Executor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #fff;
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .search-bar {
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 30px;
+      border: 2px solid #007bff;
+      background-color: #333;
+      color: white;
+      transition: border-color 0.3s ease;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      border-color: #0056b3;
+    }
+
+    .platform-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .platform-buttons button {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .platform-buttons button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .executor-container {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .executor-container.active {
+      display: flex;
+    }
+
+    .executor-card {
+      background-color: #333;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      padding: 20px;
+      text-align: center;
+      width: 240px;
+      transition: transform 0.3s ease;
+    }
+
+    .executor-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .executor-card img {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .executor-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .executor-card a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .executor-card a:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">ProCore Executor</div>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search Executors..." oninput="filterExecutors()">
+  </div>
+
+  <div class="platform-buttons">
+    <button onclick="showExecutors('android')">Android</button>
+    <button onclick="showExecutors('ios')">Ios</button>
+    <button onclick="showExecutors('windows')">Windows</button>
+  </div>
+
+  <div class="executor-container active" id="android-section">
+    <!-- Android Executors -->
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1357948419557298217.png" alt="Fluxus">
+      <h3>Fluxus</h3>
+      <a href="https://example.com/fluxus.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1357949066323165225.png" alt="Arceus">
+      <h3>Arceus</h3>
+      <a href="https://example.com/arceus.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1357949163983339642.png" alt="Codex">
+      <h3>Codex</h3>
+      <a href="https://example.com/codex.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358650024774471752.png" alt="Trigon">
+      <h3>Trigon</h3>
+      <a href="https://example.com/trigon.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358650643534843996.png" alt="Vegax">
+      <h3>Vegax</h3>
+      <a href="https://example.com/vegax.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358652863810765003.png" alt="Cryptic">
+      <h3>Cryptic</h3>
+      <a href="https://example.com/cryptic.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358651203499855893.png" alt="Evon">
+      <h3>Evon</h3>
+      <a href="https://example.com/evon.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358650337292189767.png" alt="Hydrogen">
+      <h3>Hydrogen</h3>
+      <a href="https://example.com/hydrogen.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1357948978725130291.png" alt="Delta">
+      <h3>Delta</h3>
+      <a href="https://example.com/delta.apk">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1357948884047102082.png" alt="Revelix">
+      <h3>Revelix</h3>
+      <a href="https://example.com/revelix.apk">Download</a>
+    </div>
+  </div>
+
+  <div class="executor-container" id="ios-section">
+    <!-- iOS Executors -->
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1357948978725130291.png" alt="Delta">
+      <h3>Delta</h3>
+      <a href="https://example.com/delta.ipa">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358651203499855893.png" alt="Cubix">
+      <h3>Cubix</h3>
+      <a href="https://example.com/cubix.ipa">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358651709261484113.png" alt="APPLEWARE">
+      <h3>APPLEWARE</h3>
+      <a href="https://example.com/appleware.ipa">Download</a>
+    </div>
+  </div>
+
+  <div class="executor-container" id="windows-section">
+    <!-- Windows Executors -->
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358652274297016331.png" alt="Solara">
+      <h3>Solara</h3>
+      <a href="https://example.com/solara.exe">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358652201664380930.png" alt="Wave">
+      <h3>Wave</h3>
+      <a href="https://example.com/wave.exe">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358652137831137381.png" alt="Internal X">
+      <h3>Internal X</h3>
+      <a href="https://example.com/internalx.exe">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358651997879931001.png" alt="Synapse">
+      <h3>Synapse Z</h3>
+      <a href="https://example.com/synapse.exe">Download</a>
+    </div>
+    <div class="executor-card">
+      <img src="https://cdn.discordapp.com/emojis/1358652863810765003.png" alt="Z">
+      <h3>Cryptic</h3>
+      <a href="https://example.com/z.exe">Download</a>
+    </div>
+  </div>
+
+  <script>
+    function showExecutors(platform) {
+      document.querySelectorAll('.executor-container').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(`${platform}-section`).classList.add('active');
+    }
+
+    function filterExecutors() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const cards = document.querySelectorAll('.executor-card');
+      cards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        if (name.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
