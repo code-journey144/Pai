@@ -25,9 +25,17 @@
     .header {
       font-size: 2.5rem;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-align: center;
       color: white;
+    }
+
+    .description {
+      text-align: center;
+      max-width: 700px;
+      margin-bottom: 30px;
+      color: #ccc;
+      font-size: 1.1rem;
     }
 
     .search-bar {
@@ -135,6 +143,10 @@
 <body>
   <div class="header">ProCore Executor</div>
 
+  <p class="description">
+    Welcome to ProCore Executor — your all-in-one hub to download the latest and safest Roblox executors for Android, iOS, and Windows. Choose your platform, search your favorite executor, and download directly.
+  </p>
+
   <div class="search-bar">
     <input type="text" id="search" placeholder="Search Executors..." oninput="filterExecutors()">
   </div>
@@ -145,8 +157,8 @@
     <button onclick="showExecutors('windows')">Windows</button>
   </div>
 
+  <!-- Android Executors -->
   <div class="executor-container active" id="android-section">
-    <!-- Android Executors -->
     <div class="executor-card">
       <img src="https://cdn.discordapp.com/emojis/1357948419557298217.png" alt="Fluxus">
       <h3>Fluxus</h3>
@@ -199,8 +211,8 @@
     </div>
   </div>
 
+  <!-- iOS Executors -->
   <div class="executor-container" id="ios-section">
-    <!-- iOS Executors -->
     <div class="executor-card">
       <img src="https://cdn.discordapp.com/emojis/1357948978725130291.png" alt="Delta">
       <h3>Delta</h3>
@@ -218,8 +230,8 @@
     </div>
   </div>
 
+  <!-- Windows Executors -->
   <div class="executor-container" id="windows-section">
-    <!-- Windows Executors -->
     <div class="executor-card">
       <img src="https://cdn.discordapp.com/emojis/1358652274297016331.png" alt="Solara">
       <h3>Solara</h3>
@@ -260,11 +272,7 @@
       const cards = document.querySelectorAll('.executor-card');
       cards.forEach(card => {
         const name = card.querySelector('h3').textContent.toLowerCase();
-        if (name.includes(query)) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.display = name.includes(query) ? 'block' : 'none';
       });
     }
   </script>
